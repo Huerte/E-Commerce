@@ -210,7 +210,7 @@
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <span class="text-muted">Subtotal</span>
-                <span class="fw-semibold">${{ order.subtotal }}</span>
+                <span class="fw-semibold">₱{{ order.subtotal }}</span>
             </li>
             {% if promo_code %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -223,7 +223,7 @@
                     <span class="badge bg-danger text-light me-2">
                         {{ promo_code.discount_percentage }}%
                     </span>
-                    <span class="fw-semibold text-danger">- ${{ order.discount }}</span>
+                    <span class="fw-semibold text-danger">- ₱{{ order.discount }}</span>
                 </div>
             </li>
           {% endif %}
@@ -232,11 +232,11 @@
         
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <span class="text-muted">Shipping</span>
-                <span class="fw-semibold text-success">${{ order.shipping_price }}</span>
+                <span class="fw-semibold text-success">₱{{ order.shipping_price }}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
                 <span class="fw-bold">Total</span>
-                <span class="fw-bold fs-5">${{ order.total_price }}</span>
+                <span class="fw-bold fs-5">₱{{ order.total_price }}</span>
             </li>
         </ul>              
     </div>
@@ -294,8 +294,8 @@
                 <tr>
                     <td>{{ item.product.name }}</td>
                     <td>{{ item.quantity }}</td>
-                    <td>${{ item.price }}</td>
-                    <td>${{ item.total_price }}</td>
+                    <td>₱{{ item.price }}</td>
+                    <td>₱{{ item.total_price }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

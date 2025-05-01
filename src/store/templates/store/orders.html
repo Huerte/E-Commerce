@@ -77,7 +77,7 @@
                 </div>
               </div>
               <div class="order-meta">
-                <div class="mb-1 fw-bold text-primary">${{ order.total_price|floatformat:2 }}</div>
+                <div class="mb-1 fw-bold text-primary">₱{{ order.total_price|floatformat:2 }}</div>
                 <div class="status-pill status-{{ order.status }}">{{ order.status }}</div>
                 {% if order.is_paid %}
                   <div class="text-success mt-1 small"><i class="fas fa-check-circle me-1"></i>Paid</div>

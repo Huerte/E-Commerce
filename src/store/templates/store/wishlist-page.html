@@ -73,10 +73,10 @@
                     <h6 class="fw-semibold mb-1 text-truncate">{{ product.name }}</h6>
                     <div class="d-flex justify-content-between align-items-center mb-1">
                         {% if product.is_on_sale %}
-                        <span class="text-danger fw-bold">${{ product.discounted_price|floatformat:2 }}</span>
-                        <small class="text-muted text-strike">${{ product.price|floatformat:2 }}</small>
+                        <span class="text-danger fw-bold">₱{{ product.discounted_price|floatformat:2 }}</span>
+                        <small class="text-muted text-strike">₱{{ product.price_in_peso_value|floatformat:2 }}</small>
                         {% else %}
-                        <span class="text-primary fw-bold">${{ product.price|floatformat:2 }}</span>
+                        <span class="text-primary fw-bold">₱{{ product.price_in_peso_value|floatformat:2 }}</span>
                         {% endif %}
                     </div>
                     <p class="text-muted small mb-0">{{ product.category }}</p>
@@ -113,11 +113,11 @@
                     </a>
                     <p class="mb-1 text-muted small">{{ product.category }}</p>
                     {% if product.is_on_sale %}
-                    <div class="text-danger product-price mb-1">${{ product.discounted_price|floatformat:2 }}
-                    <span class="text-muted text-strike ms-2">${{ product.price|floatformat:2 }}</span>
+                    <div class="text-danger product-price mb-1">₱{{ product.discounted_price|floatformat:2 }}
+                    <span class="text-muted text-strike ms-2">₱{{ product.price_in_peso_value|floatformat:2 }}</span>
                     </div>
                     {% else %}
-                    <div class="text-primary product-price mb-1">${{ product.price|floatformat:2 }}</div>
+                    <div class="text-primary product-price mb-1">₱{{ product.price_in_peso_value|floatformat:2 }}</div>
                     {% endif %}
                 </div>
                 <div class="product-actions">

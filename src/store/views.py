@@ -445,17 +445,23 @@ def product_view(request, category=None):
         product.price_display = product.price_in_peso
 
     address = None
+    wishlist_product_ids = []
+    products_in_cart = []
     if request.user.is_authenticated:
         try:
             address = models.ShippingAddress.objects.get(user=request.user)
         except models.ShippingAddress.DoesNotExist:
             pass
+        wishlist_product_ids = models.ProductWishlist.objects.filter(
+            user=request.user
+        ).values_list("product_id", flat=True)
 
     context = {
         "products": products,
         "categories": categories,
         "selected_category": selected_category,
         "user_address": address,
+        "wishlist_product_ids": wishlist_product_ids
     }
 
     return render(request, "store/products.html", context)
@@ -465,15 +471,27 @@ def product_details(request, product_id):
     product = get_object_or_404(models.Product, id=product_id)
     product.price_display = product.price_in_peso
     address = None
+    cart_item_exist = False
+    wishlist_product_ids = []
     if request.user.is_authenticated:
         try:
             address = models.ShippingAddress.objects.get(user=request.user)
         except models.ShippingAddress.DoesNotExist:
             pass
+        
+        cart_item_exist = models.CartItem.objects.filter(
+            user=request.user, product=product
+        ).exists()
+        wishlist_product_ids = list(
+            models.ProductWishlist.objects.filter(user=request.user)
+                    .values_list('product_id', flat=True)
+        )
 
     context = {
         "product": product,
         "user_address": address,
+        "wishlist_product_ids": wishlist_product_ids,
+        "cart_item_exist": cart_item_exist
     }
     return render(request, "store/product-detail.html", context)
 

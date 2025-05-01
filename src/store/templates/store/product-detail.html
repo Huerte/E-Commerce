@@ -1,4 +1,5 @@
 {% extends 'store/index.html' %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 {% block content %}
 <!-- Breadcrumb Navigation -->
@@ -202,22 +203,55 @@
                                 
                                 <!-- Add to Cart Button -->
                                 <div class="d-flex gap-2 mb-3">
-                                    <!-- Add to Cart Button (90%) -->
                                     <button type="submit" class="btn btn-primary py-2 fw-medium flex-grow-1" style="flex-basis: 90%;">
                                         <i class="fas fa-cart-plus me-2"></i> Add to Cart
                                     </button>
 
-                                    <!-- Wishlist Button (10%) -->
+                                    <!-- Wishlist Button -->
                                     <button
-                                        type="button"
-                                        class="btn rounded-pill {% if product.id in wishlist_product_ids %}btn-danger{% else %}btn-outline-danger{% endif %} py-2 fw-medium wishlist-btn"
-                                        data-product-id="{{ product.id }}"
-                                        data-action="{% if product.id in wishlist_product_ids %}remove{% else %}add{% endif %}"
-                                        title="{% if product.id in wishlist_product_ids %}Remove from Wishlist{% else %}Add to Wishlist{% endif %}"
-                                        style="flex-basis: 10%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                    type="button"
+                                    class="btn {% if product.id in wishlist_product_ids %}btn-danger{% else %}btn-light{% endif %} border rounded-circle shadow-sm wishlist-btn"
+                                    data-product-id="{{ product.id }}"
+                                    title="{% if product.id in wishlist_product_ids %}Remove from Wishlist{% else %}Add to Wishlist{% endif %}"
+                                    style="width: 2.5rem; height: 2.5rem;"
                                     >
-                                        <i class="fas fa-heart{% if product.id not in wishlist_product_ids %} text-muted{% endif %}"></i>
+                                    <i class="fa fa-heart {% if product.id in wishlist_product_ids %}text-white{% else %}text-muted{% endif %}"></i>
                                     </button>
+
+                                    <script>
+                                        function getCookie(name) {
+                                          const m = document.cookie.match('(^|;)\\s*' + name + '=\\s*([^;]+)');
+                                          return m ? m.pop() : '';
+                                        }
+                                        
+                                        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+                                          btn.addEventListener('click', e => {
+                                            e.preventDefault();
+                                            const pid = btn.dataset.productId;
+                                            const icon = btn.querySelector('i');
+                                        
+                                            fetch("{% url 'toggle-wishlist' %}", {
+                                              method: 'POST',
+                                              headers: {
+                                                'X-CSRFToken': getCookie('csrftoken'),
+                                                'X-Requested-With': 'XMLHttpRequest',
+                                                'Content-Type': 'application/x-www-form-urlencoded'
+                                              },
+                                              body: new URLSearchParams({ product_id: pid })
+                                            })
+                                            .then(r => r.json())
+                                            .then(data => {
+                                              if (!data.success) return;
+                                              const inWish = data.in_wishlist;
+                                              btn.classList.toggle('btn-danger', inWish);
+                                              btn.classList.toggle('btn-light', !inWish);
+                                              icon.classList.toggle('text-white', inWish);
+                                              icon.classList.toggle('text-muted', !inWish);
+                                            })
+                                            .catch(console.error);
+                                          });
+                                        });
+                                        </script>                                        
                                 </div>
 
                             {% endif %}
@@ -582,43 +616,6 @@
             });
         });
     });
-
-        document.querySelectorAll('.wishlist-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const productId = this.dataset.productId;
-                const action = this.dataset.action;
-        
-                fetch("{% url 'toggle-wishlist' %}", {
-                    method: "POST",
-                    headers: {
-                        "X-CSRFToken": "{{ csrf_token }}",
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: new URLSearchParams({ product_id: productId })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        const icon = this.querySelector('i');
-                        if (data.in_wishlist) {
-                            this.classList.remove("btn-outline-dark");
-                            this.classList.add("btn-danger");
-                            this.dataset.action = "remove";
-                            this.title = "Remove from Wishlist";
-                            icon.classList.remove("text-muted");
-                            this.innerHTML = '<i class="fas fa-heart me-2"></i>Remove from Wishlist';
-                        } else {
-                            this.classList.remove("btn-danger");
-                            this.classList.add("btn-outline-dark");
-                            this.dataset.action = "add";
-                            this.title = "Add to Wishlist";
-                            this.innerHTML = '<i class="fas fa-heart text-muted me-2"></i>Add to Wishlist';
-                        }
-                    }
-                });
-            });
-        });
-
 </script>
 
 {% endblock %}
