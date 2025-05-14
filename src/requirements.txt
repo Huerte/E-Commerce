@@ -25,3 +25,4 @@ sqlparse==0.5.3
 tzdata==2025.2
 urllib3==2.4.0
 wheel==0.45.1
+whitenoise>=6.6.0

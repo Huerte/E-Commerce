@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'main.middleware.admin_restrictor.AdminAccessMiddleware',
 
     'allauth.account.middleware.AccountMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -151,6 +152,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'store', 'static'),
 ]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
