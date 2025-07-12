@@ -1,6 +1,7 @@
 from django.contrib.messages import constants as messages
-from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
+from pathlib import Path
 import os
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
@@ -111,6 +112,7 @@ DATABASES = {
     }
 }
 
+# DATABASES["default"] = dj_database_url.parse("postgresql://ecommerce_postgres_v2rz_user:CkmU8cnBOdutf0zJvZv5qNzc8HpUpQJV@dpg-d0hun3buibrs739pj0jg-a.singapore-postgres.render.com/ecommerce_postgres_v2rz")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -188,4 +190,4 @@ SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['e-commerce-jrwt.onrender.com']
+ALLOWED_HOSTS = ['*', 'e-commerce-jrwt.onrender.com']
